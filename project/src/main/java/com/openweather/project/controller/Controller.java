@@ -5,14 +5,13 @@ package com.openweather.project.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-
 import org.json.simple.parser.ParseException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.openweather.project.model.weather_conditions;
 import com.openweather.project.service.filewriter;
 import com.openweather.project.service.*;
 
@@ -25,24 +24,32 @@ public class Controller {
 	/*
 	 * rotta per le previsioni future
 	 */
+
 	@GetMapping("/predictions")
-	public ArrayList<weather_conditions> predictions (@RequestParam(name = "q") String q, @RequestParam(name = "apiKey") String apiKey ) throws ParseException{
-	return parser.forecast_weather_data(q, apiKey);
+	public ResponseEntity<Object> predictions(@RequestParam String q) throws ParseException {
+
+		return new ResponseEntity<>(parser.forecast_Stamper(q), HttpStatus.OK);
 	}
 	/*
 	 * rotta per le condizioni attuali
 	 */
-	
+
 	@GetMapping("/current")
-	public weather_conditions current(@RequestParam(name = "q") String q, @RequestParam(name = "apiKey") String apiKey) throws ParseException {
-		return parser.current_weather_data(q, apiKey);
+	public ResponseEntity<Object> current_situation(@RequestParam String q) throws ParseException {
+		//System.out.println(parser.current_Stamper(q));
+		return new ResponseEntity<>(parser.current_Stamper(q), HttpStatus.OK);
+
 	}
+
 	/*
 	 * rotta per salvare le condizioni attuali nello storico
 	 */
 	@GetMapping("/save_history")
-	public void saved(@RequestParam(name = "q") String q, @RequestParam(name = "apiKey") String apiKey) throws FileNotFoundException, ParseException, IOException {
-		filewriter.scrittura(q, apiKey);
+	public ResponseEntity<Object> saved(@RequestParam String q)
+			throws FileNotFoundException, ParseException, IOException {
+
+		return new ResponseEntity<>(filewriter.scrittura(q), HttpStatus.OK);
+
 	}
-	
+
 }

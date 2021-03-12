@@ -11,314 +11,367 @@ import org.springframework.web.client.RestTemplate;
 
 import com.openweather.project.model.weather_conditions;
 
-
-
 /*
  * questa classe serve ad ottenere i dati dal server riguardo le previsioni e le condizioni attuali e ad integrarli in 
  * strutture dati create appositamente
  */
 
-
-
-
 public class parser {
-	
-	
-	private String apiKey="0b1a0a7aebf19e0cbbe68d82742bdf97";
-/*
- * questo metodo ottiene i dati delle previsioni per i prossimi 5 giorni dalla chiamata API e li restituisce come un 
- * JSONObject
- */
-	
-	
-	public JSONObject  forecast_weather_data (String q) throws ParseException {
+
+	private static final String apiKey = "0b1a0a7aebf19e0cbbe68d82742bdf97";
+	/*
+	 * questo metodo ottiene i dati delle previsioni per i prossimi 5 giorni dalla
+	 * chiamata API e li restituisce come un JSONObject
+	 */
+
+	public static JSONObject forecast_weather_data(String q) throws ParseException {
 		JSONObject response;
-		String url = "api.openweathermap.org/data/2.5/forecast?q=" + q +"&appid=" + apiKey;
+		String url = "http://api.openweathermap.org/data/2.5/forecast?q=" + q + "&appid=" + apiKey;
 		RestTemplate appoggio = new RestTemplate();
 		response = new JSONObject(appoggio.getForObject(url, String.class));
 		return response;
 	}
 	/*
-	 * questo metodo ottiene i dati delle condizioni meteo attuali dalla chiamata API e li restituisce come un 
-     * JSONObject
+	 * questo metodo ottiene i dati delle condizioni meteo attuali dalla chiamata
+	 * API e li restituisce come un JSONObject
 	 */
-	
-	public JSONObject current_weather_data(String q) throws ParseException{
+
+	public static JSONObject current_weather_data(String q) throws ParseException {
 		JSONObject response;
-		String url = "api.openweathermap.org/data/2.5/weather?q="+ q +"&appid=" + apiKey;
+		String url = "http://api.openweathermap.org/data/2.5/weather?q=" + q + "&appid=" + apiKey;
 		RestTemplate appoggio = new RestTemplate();
 		response = new JSONObject(appoggio.getForObject(url, String.class));
 		return response;
 	}
-	
+
 	/*
-	 * questo metodo riempie un ArrayList di weather_conditions con i dati delle previsioni precedentemente ottenuti
+	 * questo metodo riempie un ArrayList di weather_conditions con i dati delle
+	 * previsioni precedentemente ottenuti
 	 */
-	
-	public ArrayList<weather_conditions> forecast_fill (String q) throws ParseException{
+
+	public static ArrayList<weather_conditions> forecast_fill(String q) throws ParseException {
 		ArrayList<weather_conditions> results = new ArrayList<weather_conditions>();
 		JSONObject data = forecast_weather_data(q);
-		JSONArray list = (JSONArray)data.get("list");
+		JSONArray list = (JSONArray) data.get("list");
 		for (Object currents : list) {
 			JSONObject situation = (JSONObject) currents;
-			JSONObject main = (JSONObject)situation.get("main");
-			JSONArray weather = (JSONArray)situation.get("weather");
-			JSONObject effective_weather = (JSONObject)weather.get(0);
-			JSONObject clouds=(JSONObject)situation.get("clouds");
-			JSONObject winds = (JSONObject)situation.get("wind");
-		weather_conditions w = new weather_conditions();
-		float temp = (float)main.get("temp");
-		w.setTemp(temp);
-		float feels_like = (float)main.get("feels_like");
-		w.setFeels_like(feels_like);
-		float temp_min = (float)main.get("temp_min");
-		w.setTemp_min(temp_min);
-		float temp_max = (float)main.get("temp_max");
-		w.setTemp_max(temp_max);
-		float pressure = (float)main.get("pressure");
-		w.setPressure(pressure);
-		int humidity =(int)main.get("humidity");
-		w.setHumidity(humidity);
-		float temp_kf = (float)main.get("temp_kf");
-		w.setTemp_kf(temp_kf);
-		String condition = (String)effective_weather.get("main");
-		w.setCondition(condition);
-		String description = (String)effective_weather.get("description");
-		w.setDescription(description);
-		int cloud = (int)clouds.get("all");
-		w.setClouds(cloud);
-		int wind_speed =(int)winds.get("speed");
-		w.setWind_speed(wind_speed);
-		int wind_deg = (int)winds.get("deg");
-		w.setWind_deg(wind_deg);
-		int visibility = (int)situation.get("visibility");
-		w.setVisibility(visibility);
-		long dt_txt = (long)situation.get("dt_txt");
-		w.setDt_txt(dt_txt);
-		results.add(w);
+			JSONObject main = (JSONObject) situation.get("main");
+			JSONArray weather = (JSONArray) situation.get("weather");
+			JSONObject effective_weather = (JSONObject) weather.get(0);
+			JSONObject clouds = (JSONObject) situation.get("clouds");
+			JSONObject winds = (JSONObject) situation.get("wind");
+			weather_conditions w = new weather_conditions();
+			/*
+			 * è necessario il check di tipo delle variabili ottenute ed eventualmente il
+			 * loro casting per poterle inserire in un oggetto weather_conditions
+			 */
+
+			Object t = (Object) main.get("temp");
+			if (t instanceof Double) {
+				double temp = (double) t;
+				w.setTemp(temp);
+			} else if (t instanceof Long) {
+				Long temp = (Long) t;
+				double dtemp = temp.doubleValue();
+				w.setTemp(dtemp);
+			}
+
+			Object fl = (Object) main.get("feels_like");
+			if (fl instanceof Double) {
+				double feels_like = (double) fl;
+				w.setFeels_like(feels_like);
+			} else if (fl instanceof Long) {
+				Long feels_like = (Long) fl;
+				double dfl = feels_like.doubleValue();
+				w.setFeels_like(dfl);
+			}
+
+			Object tmin = (Object) main.get("temp_min");
+			if (tmin instanceof Double) {
+				double temp_min = (double) tmin;
+				w.setTemp_min(temp_min);
+			} else if (tmin instanceof Long) {
+				Long ltmin = (Long) tmin;
+				double dtmin = ltmin.doubleValue();
+				w.setTemp_min(dtmin);
+			}
+
+			Object tmax = (Object) main.get("temp_max");
+			if (tmax instanceof Double) {
+				double temp_max = (double) tmax;
+				w.setTemp_max(temp_max);
+			} else if (tmax instanceof Long) {
+				Long ltmax = (Long) tmax;
+				double dtmax = ltmax.doubleValue();
+				w.setTemp_max(dtmax);
+			}
+
+			Object pr = (Object) main.get("pressure");
+			if (pr instanceof Double) {
+				double pressure = (double) pr;
+				w.setPressure(pressure);
+			} else if (pr instanceof Long) {
+				Long lpr = (Long) pr;
+				double dpr = lpr.doubleValue();
+				w.setPressure(dpr);
+			}
+
+			Object hum = (Object) main.get("humidity");
+			if (hum instanceof Double) {
+				double humidity = (double) hum;
+				w.setHumidity(humidity);
+			} else if (hum instanceof Long) {
+				Long lhum = (Long) hum;
+				double dhum = lhum.doubleValue();
+				w.setHumidity(dhum);
+			}
+
+			Object tkf = (Object) main.get("temp_kf");
+			if (tkf instanceof Double) {
+				double temp_kf = (double) tkf;
+				w.setTemp_kf(temp_kf);
+			} else if (tkf instanceof Long) {
+				Long ltkf = (Long) tkf;
+				double dtkf = ltkf.doubleValue();
+				w.setTemp_kf(dtkf);
+			}
+
+			String condition = (String) effective_weather.get("main");
+			w.setCondition(condition);
+			String description = (String) effective_weather.get("description");
+			w.setDescription(description);
+
+			Object cl = (Object) clouds.get("all");
+			if (cl instanceof Double) {
+				double cloud = (double) cl;
+				w.setClouds(cloud);
+			} else if (cl instanceof Long) {
+				Long lcl = (Long) cl;
+				double dcl = lcl.doubleValue();
+				w.setClouds(dcl);
+			}
+
+			Object ws = (Object) winds.get("speed");
+			if (ws instanceof Double) {
+				double wind_speed = (double) ws;
+				w.setWind_speed(wind_speed);
+			} else if (ws instanceof Long) {
+				Long lws = (Long) ws;
+				double dws = lws.doubleValue();
+				w.setWind_speed(dws);
+			}
+
+			Object wd = (Object) winds.get("deg");
+			if (wd instanceof Double) {
+				double wind_deg = (double) wd;
+				w.setWind_deg(wind_deg);
+			} else if (wd instanceof Long) {
+				Long lwd = (Long) wd;
+				double dwd = lwd.doubleValue();
+				w.setWind_deg(dwd);
+			}
+
+			Object vis = (Object) situation.get("visibility");
+			if (vis instanceof Double) {
+				double visibility = (double) vis;
+				w.setVisibility(visibility);
+			} else if (vis instanceof Long) {
+				Long lvis = (Long) vis;
+				double dvis = lvis.doubleValue();
+				w.setVisibility(dvis);
+			}
+
+			String dt = (String) situation.get("dt_txt");
+			w.setDt_txt(dt);
+
+			results.add(w);
 		}
 		return results;
 	}
-	
+
 	/*
-	 * questo metodo crea un oggetto weeather_conditions utilizzando i dati attuali ottenuti precedentemente
+	 * questo metodo crea un oggetto weeather_conditions utilizzando i dati attuali
+	 * ottenuti precedentemente
 	 */
-	
-	public weather_conditions current_fill(String q) throws ParseException {
+
+	public static weather_conditions current_fill(String q) throws ParseException {
 		weather_conditions results = new weather_conditions();
 		JSONObject data = current_weather_data(q);
-		JSONObject main = (JSONObject)data.get("main");
-		JSONArray weather = (JSONArray)data.get("weather");
-		JSONObject effective_weather = (JSONObject)weather.get(0);
-		JSONObject clouds=(JSONObject)data.get("clouds");
-		JSONObject winds = (JSONObject)data.get("wind");
-	
-	float temp = (float)main.get("temp");
-	results.setTemp(temp);
-	float feels_like = (float)main.get("feels_like");
-	results.setFeels_like(feels_like);
-	float temp_min = (float)main.get("temp_min");
-	results.setTemp_min(temp_min);
-	float temp_max = (float)main.get("temp_max");
-	results.setTemp_max(temp_max);
-	float pressure = (float)main.get("pressure");
-	results.setPressure(pressure);
-	int humidity =(int)main.get("humidity");
-	results.setHumidity(humidity);
-	float temp_kf = (float)main.get("temp_kf");
-	results.setTemp_kf(temp_kf);
-	String condition = (String)effective_weather.get("main");
-	results.setCondition(condition);
-	String description = (String)effective_weather.get("description");
-	results.setDescription(description);
-	int cloud = (int)clouds.get("all");
-	results.setClouds(cloud);
-	int wind_speed =(int)winds.get("speed");
-	results.setWind_speed(wind_speed);
-	int wind_deg = (int)winds.get("deg");
-	results.setWind_deg(wind_deg);
-	int visibility = (int)data.get("visibility");
-	results.setVisibility(visibility);
-	long dt_txt = (long)data.get("dt_txt");
-	results.setDt_txt(dt_txt);
-	
-	return results;
-	
-}
-	
-	
-	//PARTE VECCHIA
+		JSONObject main = (JSONObject) data.get("main");
+		JSONArray weather = (JSONArray) data.get("weather");
+		JSONObject effective_weather = (JSONObject) weather.get(0);
+		JSONObject clouds = (JSONObject) data.get("clouds");
+		JSONObject winds = (JSONObject) data.get("wind");
+
+		Object t = (Object) main.get("temp");
+		if (t instanceof Double) {
+			double temp = (double) t;
+			results.setTemp(temp);
+		} else if (t instanceof Long) {
+			Long temp = (Long) t;
+			double dtemp = temp.doubleValue();
+			results.setTemp(dtemp);
+		}
+
+		Object fl = (Object) main.get("feels_like");
+		if (fl instanceof Double) {
+			double feels_like = (double) fl;
+			results.setFeels_like(feels_like);
+		} else if (fl instanceof Long) {
+			Long feels_like = (Long) fl;
+			double dfl = feels_like.doubleValue();
+			results.setFeels_like(dfl);
+		}
+
+		Object tmin = (Object) main.get("temp_min");
+		if (tmin instanceof Double) {
+			double temp_min = (double) tmin;
+			results.setTemp_min(temp_min);
+		} else if (tmin instanceof Long) {
+			Long ltmin = (Long) tmin;
+			double dtmin = ltmin.doubleValue();
+			results.setTemp_min(dtmin);
+		}
+
+		Object tmax = (Object) main.get("temp_max");
+		if (tmax instanceof Double) {
+			double temp_max = (double) tmax;
+			results.setTemp_max(temp_max);
+		} else if (tmax instanceof Long) {
+			Long ltmax = (Long) tmax;
+			double dtmax = ltmax.doubleValue();
+			results.setTemp_max(dtmax);
+		}
+
+		Object pr = (Object) main.get("pressure");
+		if (pr instanceof Double) {
+			double pressure = (double) pr;
+			results.setPressure(pressure);
+		} else if (pr instanceof Long) {
+			Long lpr = (Long) pr;
+			double dpr = lpr.doubleValue();
+			results.setPressure(dpr);
+		} else if (pr instanceof Integer) {
+			Integer ipr = (Integer) pr;
+			double dpr = ipr.doubleValue();
+			results.setPressure(dpr);
+		} else if (pr instanceof Short) {
+			Short spr = (Short) pr;
+			double dpr = spr.doubleValue();
+			results.setPressure(dpr);
+		}
+
+		Object hum = (Object) main.get("humidity");
+		if (hum instanceof Double) {
+			double humidity = (double) hum;
+			results.setHumidity(humidity);
+		} else if (hum instanceof Long) {
+			Long lhum = (Long) hum;
+			double dhum = lhum.doubleValue();
+			results.setHumidity(dhum);
+		} else if (hum instanceof Integer) {
+			Integer ihum = (Integer) hum;
+			double dhum = ihum.doubleValue();
+			results.setPressure(dhum);
+		} else if (hum instanceof Short) {
+			Short shum = (Short) pr;
+			double dhum = shum.doubleValue();
+			results.setPressure(dhum);
+		} else if (hum instanceof Byte) {
+			Byte bhum = (Byte) hum;
+			double dhum = bhum.doubleValue();
+			results.setHumidity(dhum);
+		} else if (hum instanceof Float) {
+			Float fhum = (Float) hum;
+			double dhum = fhum.doubleValue();
+			results.setHumidity(dhum);
+		}
+
+		String condition = (String) effective_weather.get("main");
+		results.setCondition(condition);
+		String description = (String) effective_weather.get("description");
+		results.setDescription(description);
+
+		Object cl = (Object) clouds.get("all");
+		if (cl instanceof Double) {
+			double cloud = (double) cl;
+			results.setClouds(cloud);
+		} else if (cl instanceof Long) {
+			Long lcl = (Long) cl;
+			double dcl = lcl.doubleValue();
+			results.setClouds(dcl);
+		}
+
+		Object ws = (Object) winds.get("speed");
+		if (ws instanceof Double) {
+			double wind_speed = (double) ws;
+			results.setWind_speed(wind_speed);
+		} else if (ws instanceof Long) {
+			Long lws = (Long) ws;
+			double dws = lws.doubleValue();
+			results.setWind_speed(dws);
+		}
+
+		Object wd = (Object) winds.get("deg");
+		if (wd instanceof Double) {
+			double wind_deg = (double) wd;
+			results.setWind_deg(wind_deg);
+		} else if (wd instanceof Long) {
+			Long lwd = (Long) wd;
+			double dwd = lwd.doubleValue();
+			results.setWind_deg(dwd);
+		}
+
+		Object vis = (Object) data.get("visibility");
+		if (vis instanceof Double) {
+			double visibility = (double) vis;
+			results.setVisibility(visibility);
+		} else if (vis instanceof Long) {
+			Long lvis = (Long) vis;
+			double dvis = lvis.doubleValue();
+			results.setVisibility(dvis);
+		} else if (vis instanceof Integer) {
+			Integer ivis = (Integer) vis;
+			double dvis = ivis.doubleValue();
+			results.setVisibility(dvis);
+		}
+
+		String dt = (String) data.get("dt");
+		results.setDt_txt(dt);
+		return results;
+
+	}
+
+	public static String current_Stamper(String q) throws ParseException {
+		weather_conditions w = current_fill(q);
+		String stamp = "Current" + " " + q + " " + "conditions:" + "\n" + "Temperature is: " + w.getTemp() + "°k" + "\n"
+				+ "But it feels like: " + w.getFeels_like() + "°k" + "\n" + "The minimum and maximum temperature are:"
+				+ w.getTemp_min() + "°k and " + w.getTemp_max() + "°k" + "\n" + "The pressure is: " + w.getPressure()
+				+ " bar " + "\n" + "The humidity is of " + w.getHumidity() + "% " + "\n" + "The weather is "
+				+ w.getCondition() + " (" + w.getDescription() + ")" + "\n" + "The clouds' level is(in percentage): "
+				+ w.getClouds() + "\n" + "The wind is blowing at " + w.getWind_speed()
+				+ " mph and its direction's degree is of " + w.getWind_deg() + "\n" + "The visibility level is "
+				+ w.getVisibility() + "m " + "\n";
+		return stamp;
+
+	}
+
+	public static String forecast_Stamper(String q) throws ParseException {
+		ArrayList<weather_conditions> w = forecast_fill(q);
+		String stamp="";
+		for (weather_conditions counter : w) {
+			String singular = "The weather predictions for "+ counter.getDt_txt()+" in "+ q + " are:" + "\n" 
+					+ "Temperature is: " + counter.getTemp() + "°k" + "\n" + "But it feels like: "
+					+ counter.getFeels_like() + "°k" + "\n" + "The minimum and maximum temperature are:"
+					+ counter.getTemp_min() + "°k and " + counter.getTemp_max() + "°k" + "\n" + "The pressure is: "
+					+ counter.getPressure() + " bar " + "\n" + "The humidity is of " + counter.getHumidity() + "% "
+					+ "\n" + "The weather is " + counter.getCondition() + " (" + counter.getDescription() + ")" + "\n"
+					+ "The clouds' level is(in percentage): " + counter.getClouds() + "\n" + "The wind is blowing at "
+					+ counter.getWind_speed() + " mph and its direction's degree is of " + counter.getWind_deg() + "\n"
+					+ "The visibility level is " + counter.getVisibility() + "m " + "\n";	
+			stamp=stamp+singular+"\n";
+		}
 		
-//			ArrayList<weather_conditions> results = new ArrayList<weather_conditions>();
-//			String url = "api.openweathermap.org/data/2.5/forecast?q=" + q +"&appid=" + apiKey ; 
-//			String fileName = "";
-//			
-//			
-//			try {
-//				
-//				URLConnection openConnection = new URL(url).openConnection();
-//				InputStream in = openConnection.getInputStream();
-//				
-//				 String data = "";
-//				 String line = "";
-//				 try {
-//				   InputStreamReader inR = new InputStreamReader( in );
-//				   BufferedReader buf = new BufferedReader( inR );
-//				  
-//				   while ( ( line = buf.readLine() ) != null ) {
-//					   data+= line;
-//				   }
-//				 } finally {
-//				   in.close();
-//				 }
-//				 JSONParser parser = new JSONParser();
-//			JSONObject response = (JSONObject)parser.parse(data);
-//			JSONArray list = (JSONArray)response.get("list");
-				//System.out.println( data );
-//			for (Object currents : list) {
-//				JSONObject situation = (JSONObject) currents;
-//				JSONObject main = (JSONObject)situation.get("main");
-//				JSONArray weather = (JSONArray)situation.get("weather");
-//				JSONObject effective_weather = (JSONObject)weather.get(0);
-//				JSONObject clouds=(JSONObject)situation.get("clouds");
-//				JSONObject winds = (JSONObject)situation.get("wind");
-//			weather_conditions w = new weather_conditions();
-//			float temp = (float)main.get("temp");
-//			w.setTemp(temp);
-//			float feels_like = (float)main.get("feels_like");
-//			w.setFeels_like(feels_like);
-//			float temp_min = (float)main.get("temp_min");
-//			w.setTemp_min(temp_min);
-//			float temp_max = (float)main.get("temp_max");
-//			w.setTemp_max(temp_max);
-//			float pressure = (float)main.get("pressure");
-//			w.setPressure(pressure);
-//			int humidity =(int)main.get("humidity");
-//			w.setHumidity(humidity);
-//			float temp_kf = (float)main.get("temp_kf");
-//			w.setTemp_kf(temp_kf);
-//			String condition = (String)effective_weather.get("main");
-//			w.setCondition(condition);
-//			String description = (String)effective_weather.get("description");
-//			w.setDescription(description);
-//			int cloud = (int)clouds.get("all");
-//			w.setClouds(cloud);
-//			int wind_speed =(int)winds.get("speed");
-//			w.setWind_speed(wind_speed);
-//			int wind_deg = (int)winds.get("deg");
-//			w.setWind_deg(wind_deg);
-//			int visibility = (int)situation.get("visibility");
-//			w.setVisibility(visibility);
-//			long dt_txt = (long)situation.get("dt_txt");
-//			w.setDt_txt(dt_txt);
-//			results.add(w);
-//			}
-//			return results;
-//				//JSONArray obj = (JSONArray) JSONValue.parseWithException(data);	//parse JSON Array
-//				//JSONObject obj = (JSONObject) JSONValue.parseWithException(data);	 //parse JSON Object
-//				//System.out.println( "OK" );
-//			} catch (IOException | ParseException e) {
-//				e.printStackTrace();
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			return results;
-//		}
-//	
-
-
-	
-
-	
-//	public static weather_conditions current_weather_data (String q, String apiKey) throws ParseException {
-//		BufferedReader reader;
-//		String line="";
-//		StringBuffer responseContent = new StringBuffer();
-//		URL url;
-//		weather_conditions results = new weather_conditions();
-//		try {
-//			url = new URL("api.openweathermap.org/data/2.5/weather?q="+ q +"&appid=" + apiKey + "&format=json");
-//		connection =(HttpURLConnection)url.openConnection();
-//		connection.setRequestMethod("GET");
-//		connection.setConnectTimeout(5000);
-//		connection.setReadTimeout(5000);
-//		int status=connection.getResponseCode();
-//		
-//		if(status>299) {
-//			reader=new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-//			while ((line=reader.readLine())!= null) {
-//				responseContent.append(line);
-//			}
-//			reader.close();
-//		}
-//		else {
-//			reader=new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//			
-//			while ((line=reader.readLine())!= null) {
-//				responseContent.append(line);
-//			}
-//			reader.close();
-//			JSONParser parser = new JSONParser();
-//			JSONObject response = (JSONObject)parser.parse(responseContent.toString());
-//			
-//			/*
-//			 * iterazione che va a prendere gli oggetti presenti all'interno della risposta alla
-//			 * chiamata API e li inserisce in un weather_conditions che rappresenta le condizioni
-//			 * meteo attuali
-//			 */
-//			
-//				
-//				JSONObject main = (JSONObject)response.get("main");
-//				JSONArray weather = (JSONArray)response.get("weather");
-//				JSONObject effective_weather = (JSONObject)weather.get(0);
-//				JSONObject clouds=(JSONObject)response.get("clouds");
-//				JSONObject winds = (JSONObject)response.get("wind");
-//			
-//			float temp = (float)main.get("temp");
-//			results.setTemp(temp);
-//			float feels_like = (float)main.get("feels_like");
-//			results.setFeels_like(feels_like);
-//			float temp_min = (float)main.get("temp_min");
-//			results.setTemp_min(temp_min);
-//			float temp_max = (float)main.get("temp_max");
-//			results.setTemp_max(temp_max);
-//			float pressure = (float)main.get("pressure");
-//			results.setPressure(pressure);
-//			int humidity =(int)main.get("humidity");
-//			results.setHumidity(humidity);
-//			float temp_kf = (float)main.get("temp_kf");
-//			results.setTemp_kf(temp_kf);
-//			String condition = (String)effective_weather.get("main");
-//			results.setCondition(condition);
-//			String description = (String)effective_weather.get("description");
-//			results.setDescription(description);
-//			int cloud = (int)clouds.get("all");
-//			results.setClouds(cloud);
-//			int wind_speed =(int)winds.get("speed");
-//			results.setWind_speed(wind_speed);
-//			int wind_deg = (int)winds.get("deg");
-//			results.setWind_deg(wind_deg);
-//			int visibility = (int)response.get("visibility");
-//			results.setVisibility(visibility);
-//			long dt_txt = (long)response.get("dt_txt");
-//			results.setDt_txt(dt_txt);
-//			
-//			
-//		}
-//		}
-//
-//		catch (MalformedURLException e) {
-//			e.printStackTrace();
-//}catch (IOException e) {
-//e.printStackTrace();
-//}finally {
-//connection.disconnect();
-//}
-///*
-// * restituzione del weather_conditions appena creato
-// */
-//return results;
-//
-//
-//	}	
+		return stamp;
+	}
 }

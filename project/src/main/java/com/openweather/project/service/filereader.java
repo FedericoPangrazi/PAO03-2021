@@ -7,7 +7,6 @@ package com.openweather.project.service;
  * @author frede
  *
  */
-public class statsGenerator {
-	
+public class filereader {
 
 }
