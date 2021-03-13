@@ -188,10 +188,10 @@ public String getDt_txt() {
 	return dt_txt;
 }
 /**
- * @param dt_txt the dt_txt to set
+ * @param dt the dt_txt to set
  */
-public void setDt_txt(String dt_txt) {
-	this.dt_txt = dt_txt;
+public void setDt_txt(String dt) {
+	this.dt_txt = dt;
 }
 /**
  * @param temp

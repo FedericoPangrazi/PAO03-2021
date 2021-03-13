@@ -114,6 +114,14 @@ public class parser {
 				Long lpr = (Long) pr;
 				double dpr = lpr.doubleValue();
 				w.setPressure(dpr);
+			} else if (pr instanceof Integer) {
+				Integer ipr = (Integer) pr;
+				double dpr = ipr.doubleValue();
+				w.setPressure(dpr);
+			} else if (pr instanceof Short) {
+				Short spr = (Short) pr;
+				double dpr = spr.doubleValue();
+				w.setPressure(dpr);
 			}
 
 			Object hum = (Object) main.get("humidity");
@@ -123,6 +131,11 @@ public class parser {
 			} else if (hum instanceof Long) {
 				Long lhum = (Long) hum;
 				double dhum = lhum.doubleValue();
+				w.setHumidity(dhum);
+			}
+			else if(hum instanceof Integer) {
+				Integer ihum=(Integer)hum;
+				double dhum=ihum.doubleValue();
 				w.setHumidity(dhum);
 			}
 
@@ -150,6 +163,11 @@ public class parser {
 				double dcl = lcl.doubleValue();
 				w.setClouds(dcl);
 			}
+			else if(cl instanceof Integer) {
+				Integer icl=(Integer)cl;
+				double dcl=icl.doubleValue();
+				w.setClouds(dcl);
+			}
 
 			Object ws = (Object) winds.get("speed");
 			if (ws instanceof Double) {
@@ -170,6 +188,11 @@ public class parser {
 				double dwd = lwd.doubleValue();
 				w.setWind_deg(dwd);
 			}
+			else if(wd instanceof Integer) {
+				Integer iwd=(Integer)wd;
+				double dwd=iwd.doubleValue();
+				w.setWind_deg(dwd);
+			}
 
 			Object vis = (Object) situation.get("visibility");
 			if (vis instanceof Double) {
@@ -178,6 +201,11 @@ public class parser {
 			} else if (vis instanceof Long) {
 				Long lvis = (Long) vis;
 				double dvis = lvis.doubleValue();
+				w.setVisibility(dvis);
+			}
+			else if (vis instanceof Integer) {
+				Integer ivis=(Integer)vis;
+				double dvis=ivis.doubleValue();
 				w.setVisibility(dvis);
 			}
 
@@ -269,10 +297,11 @@ public class parser {
 			Long lhum = (Long) hum;
 			double dhum = lhum.doubleValue();
 			results.setHumidity(dhum);
-		} else if (hum instanceof Integer) {
+		}
+		 if (hum instanceof Integer) {
 			Integer ihum = (Integer) hum;
 			double dhum = ihum.doubleValue();
-			results.setPressure(dhum);
+			results.setHumidity(dhum);
 		} else if (hum instanceof Short) {
 			Short shum = (Short) pr;
 			double dhum = shum.doubleValue();
@@ -286,7 +315,7 @@ public class parser {
 			double dhum = fhum.doubleValue();
 			results.setHumidity(dhum);
 		}
-
+		
 		String condition = (String) effective_weather.get("main");
 		results.setCondition(condition);
 		String description = (String) effective_weather.get("description");
@@ -299,6 +328,11 @@ public class parser {
 		} else if (cl instanceof Long) {
 			Long lcl = (Long) cl;
 			double dcl = lcl.doubleValue();
+			results.setClouds(dcl);
+		}
+		else if(cl instanceof Integer) {
+			Integer icl=(Integer) cl;
+			double dcl=icl.doubleValue();
 			results.setClouds(dcl);
 		}
 
@@ -320,6 +354,26 @@ public class parser {
 			Long lwd = (Long) wd;
 			double dwd = lwd.doubleValue();
 			results.setWind_deg(dwd);
+		} else if (wd instanceof Integer) {
+			System.out.println("Integer value");
+			Integer iwd = (Integer) wd;
+			double dwd = iwd.doubleValue();
+			results.setWind_deg(dwd);
+		} else if (wd instanceof Short) {
+			System.out.println("Short value");
+			Short swd = (Short) wd;
+			double dwd = swd.doubleValue();
+			results.setWind_deg(dwd);
+		} else if (wd instanceof Byte) {
+			System.out.println("Byte value");
+			Byte bwd = (Byte) wd;
+			double dwd = bwd.doubleValue();
+			results.setWind_deg(dwd);
+		} else if (wd instanceof Float) {
+			System.out.println("Float value");
+			Float fwd = (Float) wd;
+			double dwd = fwd.doubleValue();
+			results.setWind_deg(dwd);
 		}
 
 		Object vis = (Object) data.get("visibility");
@@ -336,10 +390,8 @@ public class parser {
 			results.setVisibility(dvis);
 		}
 
-		String dt = (String) data.get("dt");
-		results.setDt_txt(dt);
-		return results;
-
+		 return results;
+		 
 	}
 
 	public static String current_Stamper(String q) throws ParseException {
@@ -358,9 +410,9 @@ public class parser {
 
 	public static String forecast_Stamper(String q) throws ParseException {
 		ArrayList<weather_conditions> w = forecast_fill(q);
-		String stamp="";
+		String stamp = "";
 		for (weather_conditions counter : w) {
-			String singular = "The weather predictions for "+ counter.getDt_txt()+" in "+ q + " are:" + "\n" 
+			String singular = "The weather predictions for " + counter.getDt_txt() + " in " + q + " are:" + "\n"
 					+ "Temperature is: " + counter.getTemp() + "°k" + "\n" + "But it feels like: "
 					+ counter.getFeels_like() + "°k" + "\n" + "The minimum and maximum temperature are:"
 					+ counter.getTemp_min() + "°k and " + counter.getTemp_max() + "°k" + "\n" + "The pressure is: "
@@ -368,10 +420,10 @@ public class parser {
 					+ "\n" + "The weather is " + counter.getCondition() + " (" + counter.getDescription() + ")" + "\n"
 					+ "The clouds' level is(in percentage): " + counter.getClouds() + "\n" + "The wind is blowing at "
 					+ counter.getWind_speed() + " mph and its direction's degree is of " + counter.getWind_deg() + "\n"
-					+ "The visibility level is " + counter.getVisibility() + "m " + "\n";	
-			stamp=stamp+singular+"\n";
+					+ "The visibility level is " + counter.getVisibility() + "m " + "\n";
+			stamp = stamp + singular + "\n";
 		}
-		
+
 		return stamp;
 	}
 }
