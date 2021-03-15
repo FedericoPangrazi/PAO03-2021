@@ -1,0 +1,12 @@
+2021-03-14
+Current London conditions:
+Temperature is: 282.96°k
+But it feels like: 276.56°k
+The minimum and maximum temperature are:282.04°k and 283.71°k
+The pressure is: 1015.0 bar 
+The humidity is of 66.0% 
+The weather is Clouds (broken clouds)
+The clouds' level is(in percentage): 75.0
+The wind is blowing at 7.2 mph and its direction's degree is of 280.0
+The visibility level is 10000.0m 
+

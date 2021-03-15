@@ -218,7 +218,7 @@ public class parser {
 	}
 
 	/*
-	 * questo metodo crea un oggetto weeather_conditions utilizzando i dati attuali
+	 * questo metodo crea un oggetto weather_conditions utilizzando i dati attuali
 	 * ottenuti precedentemente
 	 */
 
@@ -302,18 +302,6 @@ public class parser {
 			Integer ihum = (Integer) hum;
 			double dhum = ihum.doubleValue();
 			results.setHumidity(dhum);
-		} else if (hum instanceof Short) {
-			Short shum = (Short) pr;
-			double dhum = shum.doubleValue();
-			results.setPressure(dhum);
-		} else if (hum instanceof Byte) {
-			Byte bhum = (Byte) hum;
-			double dhum = bhum.doubleValue();
-			results.setHumidity(dhum);
-		} else if (hum instanceof Float) {
-			Float fhum = (Float) hum;
-			double dhum = fhum.doubleValue();
-			results.setHumidity(dhum);
 		}
 		
 		String condition = (String) effective_weather.get("main");
@@ -355,26 +343,11 @@ public class parser {
 			double dwd = lwd.doubleValue();
 			results.setWind_deg(dwd);
 		} else if (wd instanceof Integer) {
-			System.out.println("Integer value");
+			
 			Integer iwd = (Integer) wd;
 			double dwd = iwd.doubleValue();
 			results.setWind_deg(dwd);
-		} else if (wd instanceof Short) {
-			System.out.println("Short value");
-			Short swd = (Short) wd;
-			double dwd = swd.doubleValue();
-			results.setWind_deg(dwd);
-		} else if (wd instanceof Byte) {
-			System.out.println("Byte value");
-			Byte bwd = (Byte) wd;
-			double dwd = bwd.doubleValue();
-			results.setWind_deg(dwd);
-		} else if (wd instanceof Float) {
-			System.out.println("Float value");
-			Float fwd = (Float) wd;
-			double dwd = fwd.doubleValue();
-			results.setWind_deg(dwd);
-		}
+		} 
 
 		Object vis = (Object) data.get("visibility");
 		if (vis instanceof Double) {
@@ -389,11 +362,27 @@ public class parser {
 			double dvis = ivis.doubleValue();
 			results.setVisibility(dvis);
 		}
-
+        
+		Object dt=(Object)data.get("dt");
+		if(dt instanceof Integer) {
+			Integer idt=(Integer)dt;
+			String sdt=idt.toString();
+			results.setDt_txt(sdt);
+		}
+		else if(dt instanceof Double) {
+			Double ddt =(Double)dt;
+			String sdt=ddt.toString();
+			results.setDt_txt(sdt);
+		}
 		 return results;
 		 
 	}
-
+	
+	
+/*
+ * questo metodo stampa una stringa contenente i dati delle condizioni attuali presi da current_fill sotto forma di stringa,
+ * che verrà poi salvata nello storico (file di testo) 
+ */
 	public static String current_Stamper(String q) throws ParseException {
 		weather_conditions w = current_fill(q);
 		String stamp = "Current" + " " + q + " " + "conditions:" + "\n" + "Temperature is: " + w.getTemp() + "°k" + "\n"
@@ -407,7 +396,24 @@ public class parser {
 		return stamp;
 
 	}
-
+	
+	
+	/*
+	 * questo metodo crea un JSONObject con i dati utili a generare le statistiche
+	 */
+	
+	public static JSONObject current_stat_generator(String q) throws ParseException {
+		weather_conditions w=current_fill(q);
+		String results = "{\"temp\":\""+w.getTemp()+"\",\"pressure\":\""+w.getPressure()+"\",\"clouds\":\""+w.getClouds()+"\",\"date\":\""+w.getDt_txt()+"\"}";
+		JSONObject stats=new JSONObject(results);
+		return stats;
+	}
+	
+	
+	
+/*
+ * questo metodo stampa una stringa contenente i dati delle previsioni meteo ottenuti da forecast_fill
+ */
 	public static String forecast_Stamper(String q) throws ParseException {
 		ArrayList<weather_conditions> w = forecast_fill(q);
 		String stamp = "";
@@ -426,4 +432,5 @@ public class parser {
 
 		return stamp;
 	}
+	
 }

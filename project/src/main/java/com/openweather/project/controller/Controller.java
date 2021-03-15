@@ -36,7 +36,6 @@ public class Controller {
 
 	@GetMapping("/current")
 	public ResponseEntity<Object> current_situation(@RequestParam String q) throws ParseException {
-		//System.out.println(parser.current_Stamper(q));
 		return new ResponseEntity<>(parser.current_Stamper(q), HttpStatus.OK);
 
 	}
@@ -51,5 +50,17 @@ public class Controller {
 		return new ResponseEntity<>(filewriter.scrittura(q), HttpStatus.OK);
 
 	}
-
+	/*
+	 * rotta per salvare le statistiche da elaborare in un file json
+	 */
+	@GetMapping("/stats")
+	public ResponseEntity<Object> stats_saved(@RequestParam String q)
+			throws FileNotFoundException, ParseException, IOException {
+	return new ResponseEntity<>(filewriter.scritturaStats(q), HttpStatus.OK);
+	
+}
+	@GetMapping("/see_stats")
+	public ResponseEntity<Object> see_stats(@RequestParam String q) throws java.text.ParseException, ParseException{
+		return new ResponseEntity<>(filereader.stats_filler(q), HttpStatus.OK);
+	}
 }

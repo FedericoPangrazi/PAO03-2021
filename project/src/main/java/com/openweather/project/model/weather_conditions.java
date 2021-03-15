@@ -226,4 +226,5 @@ public weather_conditions() {
 	this.dt_txt = "";
 } 
 
+
 }

@@ -1,1 +1,0 @@
-com.openweather.project.model.weather_conditions@2021e24f
