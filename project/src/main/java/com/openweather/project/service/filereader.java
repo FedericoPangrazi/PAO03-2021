@@ -7,11 +7,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
 import com.openweather.project.model.stats;
 
 /**
@@ -19,25 +17,42 @@ import com.openweather.project.model.stats;
  *
  */
 public class filereader {
-   public static JSONArray statistiche(String q) throws ParseException {
+   
+	/**
+	 * metodo per leggere dal file dello storico statistiche i dati ed inserirli in un jsonarray
+	 * @param q
+	 * @return fromfile
+	 * @throws ParseException
+	 * @throws IOException
+	 */
+	@SuppressWarnings( { "null", "unchecked" } )
+	public static JSONArray statistiche(String q) throws ParseException, IOException {
     String path = System.getProperty("user.dir")+q+"_stats.json";
     JSONParser parser = new JSONParser();
     JSONArray fromfile = new JSONArray();
-    try{
-    	BufferedReader lettore= new BufferedReader(new FileReader(path));
+    BufferedReader lettore= new BufferedReader(new FileReader(path));
+    
+    while(lettore!=null) {
     	String line = lettore.readLine();
-    	fromfile=(JSONArray)parser.parse(line);
-    lettore.close();
-	}catch (IOException e){ 
-		 System.out.println("Errore di I/O");///
-   
+    	JSONObject object=(JSONObject)parser.parse(line);
+    	 fromfile.add(object);
+    	 System.out.println("oggetto aggiunto"); 
+    	 
     }
+    	lettore.close();
     return fromfile;
    }
    
-   
-   public static stats stats_filler(String q) throws java.text.ParseException, ParseException {
-	   JSONArray file=statistiche(q);
+   /**
+    * metodo per settare i dati presenti nel jsonarray precedentemente riempito in un oggetto stats
+    * @param q
+    * @return summary
+    * @throws java.text.ParseException
+    * @throws ParseException
+    * @throws IOException
+    */
+   public static stats stats_filler(String q) throws java.text.ParseException, ParseException, IOException {
+	   JSONArray file=statistiche(q);//errore
 	   stats summary = new stats();
 	   for (Object o:file) {
 		   JSONObject pointer =(JSONObject)o;
@@ -45,12 +60,12 @@ public class filereader {
 		   SimpleDateFormat datesimple = new SimpleDateFormat("yyyy-MM-dd");
 		   datesimple.parse(date);
 		   summary.setdate(datesimple);
-		   Double temp=pointer.getDouble("temp");
-		   summary.setTemp(temp);
-		   Double pressure=pointer.getDouble("pressure");
-		   summary.setPressure(pressure);
-		   Double clouds=pointer.getDouble("clouds");
-		   summary.setClouds(clouds);
+		   Object temp= pointer.get("temp");
+		   summary.setTemp((double)temp);
+		   Object pressure=pointer.get("pressure");
+		   summary.setPressure((double)pressure);
+		   Object clouds=pointer.get("clouds");
+		   summary.setClouds((double)clouds);
 		   int contatore=summary.getCounter();
 		   contatore++;
 		   summary.setCounter(contatore);

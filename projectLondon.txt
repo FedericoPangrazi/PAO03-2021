@@ -10,3 +10,27 @@ The clouds' level is(in percentage): 75.0
 The wind is blowing at 7.2 mph and its direction's degree is of 280.0
 The visibility level is 10000.0m 
 
+2021-03-15
+Current London conditions:
+Temperature is: 282.28°k
+But it feels like: 279.5°k
+The minimum and maximum temperature are:280.93°k and 283.71°k
+The pressure is: 1024.0 bar 
+The humidity is of 76.0% 
+The weather is Clouds (broken clouds)
+The clouds' level is(in percentage): 75.0
+The wind is blowing at 2.4 mph and its direction's degree is of 341.0
+The visibility level is 10000.0m 
+
+2021-03-16
+Current London conditions:
+Temperature is: 282.48°k
+But it feels like: 278.6°k
+The minimum and maximum temperature are:282.04°k and 283.15°k
+The pressure is: 1026.0 bar 
+The humidity is of 87.0% 
+The weather is Clouds (broken clouds)
+The clouds' level is(in percentage): 75.0
+The wind is blowing at 4.63 mph and its direction's degree is of 260.0
+The visibility level is 10000.0m 
+

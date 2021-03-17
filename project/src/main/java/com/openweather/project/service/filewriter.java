@@ -18,9 +18,13 @@ import org.json.simple.parser.ParseException;
  */
 
 public class filewriter  {
-	/*
+	/**
 	 * questo metodo va a scrivere un file con i dati current raccolti ad ogni chiamata e restituisce il path del file in 
 	 * formato stringa
+	 * @param q
+	 * @return
+	 * @throws IOException
+	 * @throws ParseException
 	 */
 	
  public static String scrittura(String q) throws  IOException, ParseException {
@@ -40,8 +44,12 @@ public class filewriter  {
 	 return path;
 	 }
  
- /*
+ /**
   * metodo per salvare i dati utili a generare statistiche in un file .json composto da JSONObject
+  * @param q
+  * @return
+  * @throws IOException
+  * @throws ParseException
   */
  
  public static String scritturaStats(String q) throws IOException, ParseException {
@@ -59,4 +67,5 @@ public class filewriter  {
 	 }
  }
 
+ 
 

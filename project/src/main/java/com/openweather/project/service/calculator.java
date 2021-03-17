@@ -3,6 +3,7 @@
  */
 package com.openweather.project.service;
 
+import java.io.IOException;
 import java.text.ParseException;
 
 import com.openweather.project.model.calculated_stats;
@@ -14,11 +15,23 @@ import com.openweather.project.model.stats;
  */
 public class calculator {
 	
-	
-public calculated_stats S_calculator(String q) throws ParseException, org.json.simple.parser.ParseException {
+	/**
+	 * metodo per effettuare tutti calcoli nelle variabili presenti nell'oggetto stats, ovvero massimo e minimo,media e varianza
+	 * ma solo se il periodo inserito dall'utente è accettabile, cioè non supera il numero di giorni di cui è stato salvato
+	 * il database
+	 * @param q
+	 * @param period
+	 * @return results
+	 * @throws ParseException
+	 * @throws org.json.simple.parser.ParseException
+	 * @throws IOException
+	 */
+public static calculated_stats S_calculator(String q,int period) throws ParseException, org.json.simple.parser.ParseException, IOException{
 	stats imported = filereader.stats_filler(q);
 	calculated_stats results = new calculated_stats();
-	int number = imported.getCounter();
+	int effective_number = imported.getCounter();
+	if(period<5) {
+	int requested_number=effective_number-period;
 	double min_temp=0;
 	double max_temp=0;
 	double min_pres=0;
@@ -34,7 +47,7 @@ public calculated_stats S_calculator(String q) throws ParseException, org.json.s
 	double quad_temp=0;
 	double quad_pres=0;
 	double quad_cloud=0;
-	for(int i=0; i < number; i++ ) {
+	for(int i=0; i < requested_number; i++ ) {
 		double temp_value = (double)imported.getTemp().get(i);
 		if(max_temp < temp_value) {
 			max_temp=temp_value;
@@ -63,13 +76,13 @@ public calculated_stats S_calculator(String q) throws ParseException, org.json.s
 	results.setMin_pres(min_pres);
 	results.setMax_cloud(max_cloud);
 	results.setMin_cloud(min_cloud);
-	mid_temp=(max_temp-min_temp)/(double)number;
+	mid_temp=(max_temp-min_temp)/(double)requested_number;
 	results.setMedia_temp(mid_temp);
-	mid_pres=(max_pres-min_pres)/(double)number;
+	mid_pres=(max_pres-min_pres)/(double)requested_number;
 	results.setMedia_pres(mid_pres);
-	mid_cloud=(max_cloud-min_cloud)/(double)number;
+	mid_cloud=(max_cloud-min_cloud)/(double)requested_number;
 	results.setMedia_cloud(mid_cloud);
-	for(int i=0; i < number; i++) {
+	for(int i=0; i < requested_number; i++) {
 		double temp_value = (double)imported.getTemp().get(i);
 		double pres_value=(double)imported.getPressure().get(i);
 		double cloud_value=(double)imported.getClouds().get(i);
@@ -77,12 +90,15 @@ public calculated_stats S_calculator(String q) throws ParseException, org.json.s
 		quad_pres+=(pres_value-mid_pres);
 		quad_cloud+=(cloud_value-mid_cloud);
 	}
-	var_temp=quad_temp/(double)number;
-	var_pres=quad_pres/(double)number;
-	var_cloud=quad_cloud/(double)number;
+	var_temp=quad_temp/(double)requested_number;
+	var_pres=quad_pres/(double)requested_number;
+	var_cloud=quad_cloud/(double)requested_number;
 	results.setVar_temp(var_temp);
 	results.setVar_pres(var_pres);
 	results.setVar_cloud(var_cloud);
+	
+}
 	return results;
 }
+ 
 }
