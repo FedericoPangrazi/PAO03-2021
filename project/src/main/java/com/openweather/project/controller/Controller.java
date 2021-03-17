@@ -24,9 +24,9 @@ import com.openweather.project.service.*;
 public class Controller {
 	/**
 	 * rotta per le previsioni future
-	 * @param q
-	 * @return
-	 * @throws ParseException
+	 * @param  q la città richesta
+	 * @return string
+	 * @throws ParseException exception
 	 */
 
 	@GetMapping("/predictions")
@@ -37,9 +37,9 @@ public class Controller {
 
 /**
  * rotta per visualizzare le condizioni meteo correnti
- * @param q
- * @return
- * @throws ParseException
+ * @param q la città richiesta
+ * @return i dat iin formato String
+ * @throws ParseException exception
  */
 
 	@GetMapping("/current")
@@ -50,11 +50,11 @@ public class Controller {
 
 	/**
 	 * rotta per salvare le condizioni attuali in uno storico
-	 * @param q
-	 * @return
-	 * @throws FileNotFoundException
-	 * @throws ParseException
-	 * @throws IOException
+	 * @param q la città richiesta
+	 * @return il path del file
+	 * @throws FileNotFoundException exception
+	 * @throws ParseException exception
+	 * @throws IOException exception
 	 */
 	@GetMapping("/save_history")
 	public ResponseEntity<Object> saved(@RequestParam String q)
@@ -65,34 +65,38 @@ public class Controller {
 	}
 	/**
 	 * rotta per salvare i dati utili a generare statistiche in un file json
-	 * @param q
-	 * @return
-	 * @throws FileNotFoundException
-	 * @throws ParseException
-	 * @throws IOException
+	 * @param q la città richiesta
+	 * @return il path del file
+	 * @throws FileNotFoundException exception
+	 * @throws ParseException exception
+	 * @throws IOException exception
 	 */
 	@GetMapping("/stats")
 	public ResponseEntity<Object> stats_saved(@RequestParam String q)
 			throws FileNotFoundException, ParseException, IOException {
 	return new ResponseEntity<>(filewriter.scritturaStats(q), HttpStatus.OK);
-	
+}
 	
 	/**
-	 * rotta di prova per testare il funzionamento del reader
+	 * Rotta di prova per testare il funzionamento del reader
+	 * @param q la città richiesta
+	 * @return jsonarray
+	 * @throws java.text.ParseException exception
+	 * @throws ParseException exception
+	 * @throws IOException exception
 	 */
-}
 	@GetMapping("/see_stats")
 	public ResponseEntity<Object> see_stats(@RequestParam String q) throws java.text.ParseException, ParseException, IOException{
 		return new ResponseEntity<>(filereader.stats_filler(q), HttpStatus.OK);
 	}
 	/**
 	 * rotta per generare statistiche
-	 * @param q
-	 * @param period
-	 * @return
-	 * @throws java.text.ParseException
-	 * @throws ParseException
-	 * @throws IOException
+	 * @param q la città richiesta
+	 * @param period il periodo su cui effettuare calcoli
+	 * @return un oggetto calculated_stats
+	 * @throws java.text.ParseException exception
+	 * @throws ParseException exception
+	 * @throws IOException exception
 	 */
 	@PostMapping("/calculate")
 	public ResponseEntity<Object> calculate(@RequestParam String q,@RequestParam (name= "period", defaultValue="0") int period) throws java.text.ParseException, ParseException, IOException{
