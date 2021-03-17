@@ -3,14 +3,12 @@
  */
 package com.openweather.project.model;
 
-import java.io.Serializable;
-
 /**
  * @author frede
  *
  */
-public class weather_conditions implements Serializable {
-	static final long serialVersionUID = 1;
+
+public class weather_conditions  {
 private double temp;
 private double feels_like;
 private double temp_min;
@@ -18,7 +16,7 @@ private double temp_max;
 private double pressure;
 private double humidity;
 private double temp_kf;
-private String condition; //clouds, sunny ecc.
+private String condition; 
 private String description;
 private double clouds;
 private double wind_speed;
@@ -194,21 +192,22 @@ public void setDt_txt(String dt) {
 	this.dt_txt = dt;
 }
 /**
- * @param temp
- * @param feels_like
- * @param temp_min
- * @param temp_max
- * @param pressure
- * @param humidity
- * @param temp_kf
- * @param condition
- * @param description
- * @param clouds
- * @param wind_speed
- * @param wind_deg
- * @param visibility
- * @param dt_txt
+ * @param temp la temperatura
+ * @param feels_like la temperatura percepita
+ * @param temp_min la temperatura minima
+ * @param temp_max la temperatura massima
+ * @param pressure la pressione
+ * @param humidity l'umidità
+ * @param temp_kf la temperatura in kf 
+ * @param condition la condizione
+ * @param description la descrizione
+ * @param clouds la nuvolosità 
+ * @param wind_speed la velocità del vento
+ * @param wind_deg l'angolazione del vento
+ * @param visibility la visibilità 
+ * @param dt_txt la data
  */
+
 public weather_conditions() {
 	this.temp = 0;
 	this.feels_like = 0;

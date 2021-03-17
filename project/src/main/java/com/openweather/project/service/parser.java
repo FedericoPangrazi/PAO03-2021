@@ -23,9 +23,9 @@ public class parser {
 /**
  * questo metodo ottiene i dati delle previsioni per i prossimi 5 giorni dalla
  chiamata API e li restituisce come un JSONObject
- * @param q
- * @return response
- * @throws ParseException
+ * @param q la città richiesta
+ * @return response 
+ * @throws ParseException exception
  */
 	public static JSONObject forecast_weather_data(String q) throws ParseException {
 		JSONObject response;
@@ -38,9 +38,9 @@ public class parser {
 /**
  * questo metodo ottiene i dati delle condizioni meteo attuali dalla chiamata
  API e li restituisce come un JSONObject
- * @param q
- * @return response
- * @throws ParseException
+ * @param q la città richiesta
+ * @return response 
+ * @throws ParseException exception
  */
 	public static JSONObject current_weather_data(String q) throws ParseException {
 		JSONObject response;
@@ -54,9 +54,9 @@ public class parser {
 /**
  * questo metodo riempie un ArrayList di weather_conditions con i dati delle
  previsioni precedentemente ottenuti
- * @param q
+ * @param q la città richiesta
  * @return results
- * @throws ParseException
+ * @throws ParseException exception
  */
 	public static ArrayList<weather_conditions> forecast_fill(String q) throws ParseException {
 		ArrayList<weather_conditions> results = new ArrayList<weather_conditions>();
@@ -230,9 +230,9 @@ public class parser {
 /**
  * questo metodo crea un oggetto weather_conditions utilizzando i dati attuali
 	 ottenuti precedentemente
- * @param q
+ * @param q la città richiesta
  * @return results
- * @throws ParseException
+ * @throws ParseException exception
  */
 	public static weather_conditions current_fill(String q) throws ParseException {
 		weather_conditions results = new weather_conditions();
@@ -394,9 +394,9 @@ public class parser {
 /**
  * questo metodo stampa una stringa contenente i dati delle condizioni attuali presi da current_fill sotto forma di stringa,
  * che verrà poi salvata nello storico (file di testo) 
- * @param q
+ * @param q la città richiesta
  * @return stamp
- * @throws ParseException
+ * @throws ParseException exception
  */
 	public static String current_Stamper(String q) throws ParseException {
 		weather_conditions w = current_fill(q);
@@ -417,9 +417,9 @@ public class parser {
 	/**
 	 * /*
 	 * questo metodo crea un JSONObject con i dati utili a generare le statistiche
-	 * @param q
+	 * @param q la città richiesta
 	 * @return stats
-	 * @throws ParseException
+	 * @throws ParseException exception
 	 */
 	public static JSONObject current_stat_generator(String q) throws ParseException {
 		weather_conditions w=current_fill(q);
@@ -433,9 +433,9 @@ public class parser {
 /**
  * *
  * questo metodo stampa una stringa contenente i dati delle previsioni meteo ottenuti da forecast_fill
- * @param q
+ * @param q la città richiesta
  * @return stamp
- * @throws ParseException
+ * @throws ParseException exception
  */
 	public static String forecast_Stamper(String q) throws ParseException {
 		ArrayList<weather_conditions> w = forecast_fill(q);

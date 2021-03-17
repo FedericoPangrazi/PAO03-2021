@@ -20,10 +20,10 @@ public class filereader {
    
 	/**
 	 * metodo per leggere dal file dello storico statistiche i dati ed inserirli in un jsonarray
-	 * @param q
+	 * @param q la città richiesta
 	 * @return fromfile
-	 * @throws ParseException
-	 * @throws IOException
+	 * @throws ParseException exception
+	 * @throws IOException exception
 	 */
 	@SuppressWarnings( { "null", "unchecked" } )
 	public static JSONArray statistiche(String q) throws ParseException, IOException {
@@ -45,11 +45,11 @@ public class filereader {
    
    /**
     * metodo per settare i dati presenti nel jsonarray precedentemente riempito in un oggetto stats
-    * @param q
+    * @param q la città richiesta
     * @return summary
-    * @throws java.text.ParseException
-    * @throws ParseException
-    * @throws IOException
+    * @throws java.text.ParseException exception
+    * @throws ParseException exception
+    * @throws IOException exception
     */
    public static stats stats_filler(String q) throws java.text.ParseException, ParseException, IOException {
 	   JSONArray file=statistiche(q);//errore

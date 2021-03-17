@@ -19,12 +19,12 @@ public class calculator {
 	 * metodo per effettuare tutti calcoli nelle variabili presenti nell'oggetto stats, ovvero massimo e minimo,media e varianza
 	 * ma solo se il periodo inserito dall'utente è accettabile, cioè non supera il numero di giorni di cui è stato salvato
 	 * il database
-	 * @param q
-	 * @param period
+	 * @param q la città
+	 * @param period il periodo da analizzare
 	 * @return results
-	 * @throws ParseException
-	 * @throws org.json.simple.parser.ParseException
-	 * @throws IOException
+	 * @throws ParseException exception
+	 * @throws org.json.simple.parser.ParseException exception
+	 * @throws IOException exception
 	 */
 public static calculated_stats S_calculator(String q,int period) throws ParseException, org.json.simple.parser.ParseException, IOException{
 	stats imported = filereader.stats_filler(q);

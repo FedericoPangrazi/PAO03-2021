@@ -21,10 +21,10 @@ public class filewriter  {
 	/**
 	 * questo metodo va a scrivere un file con i dati current raccolti ad ogni chiamata e restituisce il path del file in 
 	 * formato stringa
-	 * @param q
-	 * @return
-	 * @throws IOException
-	 * @throws ParseException
+	 * @param q la città richiesta
+	 * @return il path
+	 * @throws IOException exception
+	 * @throws ParseException exception
 	 */
 	
  public static String scrittura(String q) throws  IOException, ParseException {
@@ -46,10 +46,10 @@ public class filewriter  {
  
  /**
   * metodo per salvare i dati utili a generare statistiche in un file .json composto da JSONObject
-  * @param q
-  * @return
-  * @throws IOException
-  * @throws ParseException
+  * @param q la città richiesta
+  * @return path 
+  * @throws IOException exception
+  * @throws ParseException exception
   */
  
  public static String scritturaStats(String q) throws IOException, ParseException {

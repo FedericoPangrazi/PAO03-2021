@@ -39,13 +39,13 @@ public class stats {
 		this.counter=0;
 	}
 	/**
-	 * @return the first_date
+	 * @return the date
 	 */
 	public SimpleDateFormat getdate() {
 		return date;
 	}
 	/**
-	 * @param first_date the first_date to set
+	 * @param date the date to set
 	 */
 	public void setdate(SimpleDateFormat date) {
 		this.date = date;
