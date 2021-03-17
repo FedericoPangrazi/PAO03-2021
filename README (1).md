@@ -23,7 +23,7 @@ Le rotte di visualizzazione restituiscono delle risposte pre-costruite in format
 
  1. esempio di rotta di visualizzazione dati del presente (tipo String):
 *Current London conditions:
-Temperature is: 0.0°k
+Temperature is: 282.43°k
 But it feels like: 278.5°k
 The minimum and maximum temperature are:281.15°k and 282.59°k
 The pressure is: 1033.0 bar 
