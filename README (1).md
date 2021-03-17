@@ -22,6 +22,7 @@ Il dataset è stato creato utilizzando i dati della città di Londra, ma è suff
 Le rotte di visualizzazione restituiscono delle risposte pre-costruite in formato stringa utilizzando i dati ottenuti dalla API, mentre le rotte di salvataggio restituiscono i path dei file contenenti i dati salvati.
 
  1. esempio di rotta di visualizzazione dati del presente (tipo String):
+ 
 *Current London conditions:
 Temperature is: 282.43°k
 But it feels like: 278.5°k
