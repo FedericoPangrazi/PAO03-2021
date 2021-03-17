@@ -71,10 +71,12 @@ Le statistiche vengono calcolate in base al periodo inserito dall'utente, che ra
 
 ## Conclusioni
 La rotta 5 presenta un errore di lettura, perciò la rotta 6 pur essendo stata implementata non può funzionare finché non viene risolto il suddetto errore.
+
 Le librerie utilizzate e i diagrammi UML sono disponibili rispettivamente nel pom.xml e nella cartella UML.
 
 
 Pangrazi Federico
+
 Alfano Lorenza
 
 
