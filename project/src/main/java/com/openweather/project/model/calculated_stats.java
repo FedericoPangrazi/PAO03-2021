@@ -20,20 +20,7 @@ private double media_cloud;
 private double var_temp;
 private double var_pres;
 private double var_cloud;
-/** 
- * @param min_temp la temperatura minima
- * @param max_temp la temperatura massima
- * @param min_pres la pressione minima 
- * @param max_pres la pressione massima
- * @param min_cloud la nuvolosità minima
- * @param max_cloud la nuvolosità massima
- * @param media_temp la temperatura media
- * @param media_pres la pressione media
- * @param media_cloud la nuvolosità media
- * @param var_temp la varianza della temperatura
- * @param var_pres la varianza della pressione
- * @param var_cloud la varianza della nuvolosità
- */
+
 public calculated_stats() {
 	super();
 	this.min_temp = 0;
