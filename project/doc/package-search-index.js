@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.openweather.project.service"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.openweather.project"},{"l":"com.openweather.project.controller"},{"l":"com.openweather.project.model"},{"l":"com.openweather.project.service"}];updateSearchResults();
