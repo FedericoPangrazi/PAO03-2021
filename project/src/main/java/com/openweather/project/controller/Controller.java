@@ -36,7 +36,7 @@ public class Controller {
 	}
 
 /**
- * rotta per visualizzare le condizioni meteo correnti
+ * Rotta per visualizzare le condizioni meteo correnti
  * @param q la città richiesta
  * @return i dat iin formato String
  * @throws ParseException exception
